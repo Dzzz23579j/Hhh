@@ -1,0 +1,388 @@
+
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apakah Kamu Sayang Aku? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor dengan Hati */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #ff69b4;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+
+        .cursor::before {
+            content: '💖';
+            position: absolute;
+            top: -15px;
+            left: -8px;
+            font-size: 16px;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Floating Hearts Animation */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 182, 193, 0.8);
+            animation: floatUp 6s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .question-title {
+            font-size: 2.5rem;
+            color: #d63384;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 10px rgba(214, 51, 132, 0.3); }
+            to { text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1), 0 0 20px rgba(214, 51, 132, 0.6); }
+        }
+
+        .buttons-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            position: absolute;
+        }
+
+        .btn-yes {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            left: 50%;
+            top: 50px;
+            transform: translateX(-50%);
+        }
+
+        .btn-yes:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-no {
+            background: linear-gradient(45deg, #6c757d, #8d9296);
+            color: white;
+            transition: all 0.1s ease;
+        }
+
+        .btn-no:hover {
+            transform: scale(1.05);
+        }
+
+        /* Success Page */
+        .success-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+        }
+
+        .success-title {
+            font-size: 3rem;
+            color: #d63384;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .success-message {
+            font-size: 1.5rem;
+            color: #495057;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .romantic-message {
+            margin-top: 30px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .heart-decoration {
+            font-size: 2rem;
+            margin: 20px 0;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+
+        .love-quote {
+            font-size: 1.3rem;
+            color: #d63384;
+            font-style: italic;
+            line-height: 1.6;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .question-title {
+                font-size: 2rem;
+            }
+            
+            .question-container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .success-title {
+                font-size: 2.2rem;
+            }
+            
+            .btn {
+                font-size: 1rem;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    
+    <!-- Floating Hearts -->
+    <div class="floating-hearts"></div>
+
+    <!-- Page 1: Question -->
+    <div class="page active" id="page1">
+        <div class="question-container">
+            <h1 class="question-title">💕 Apakah kamu sayang dan cinta aku? 💕</h1>
+            <div class="buttons-container">
+                <button class="btn btn-yes" onclick="goToSuccessPage()">
+                    💖 Yes, I love and care for you! 💖
+                </button>
+                <button class="btn btn-no" id="noBtn">
+                    💔 No, I already have a new lover
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: Success -->
+    <div class="page" id="page2">
+        <div class="success-container">
+            <h1 class="success-title">🥰 Aku tau kok ayang sayang aku! 🥰</h1>
+            <p class="success-message">
+                Terima kasih sudah menjawab dengan jujur, sayang! 💕<br>
+                Aku juga sangat sayang dan cinta ayang bauk! 💖
+            </div>
+            <button class="btn btn-yes" onclick="goBackToQuestion()" style="position: relative; margin-top: 20px;">
+                💕 Tanya lagi dong! 💕
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Custom Cursor Following Mouse
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Floating Hearts Animation
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = ['💕', '💖', '💗', '💝', '💘'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            
+            document.querySelector('.floating-hearts').appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+
+        // Create floating hearts every 500ms
+        setInterval(createFloatingHeart, 500);
+
+        // Moving "No" Button Logic
+        const noBtn = document.getElementById('noBtn');
+        let isAvoidingCursor = false;
+
+        function moveNoButton() {
+            if (isAvoidingCursor) return;
+            
+            isAvoidingCursor = true;
+            const container = document.querySelector('.buttons-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = containerRect.width - noBtn.offsetWidth;
+            const maxY = containerRect.height - noBtn.offsetHeight;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+            
+            setTimeout(() => {
+                isAvoidingCursor = false;
+            }, 300);
+        }
+
+        // Initial random position for no button
+        function setInitialNoButtonPosition() {
+            const container = document.querySelector('.buttons-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            noBtn.style.left = '50px';
+            noBtn.style.top = '120px';
+        }
+
+        // Set initial position when page loads
+        window.addEventListener('load', setInitialNoButtonPosition);
+
+        // Move no button on hover/approach
+        noBtn.addEventListener('mouseenter', moveNoButton);
+        noBtn.addEventListener('mouseover', moveNoButton);
+
+        // Also move when cursor gets close (for mobile/touch devices)
+        document.addEventListener('mousemove', (e) => {
+            const noBtnRect = noBtn.getBoundingClientRect();
+            const distance = Math.sqrt(
+                Math.pow(e.clientX - (noBtnRect.left + noBtnRect.width/2), 2) + 
+                Math.pow(e.clientY - (noBtnRect.top + noBtnRect.height/2), 2)
+            );
+            
+            if (distance < 100 && document.getElementById('page1').classList.contains('active')) {
+                moveNoButton();
+            }
+        });
+
+        // Page Navigation Functions
+        function goToSuccessPage() {
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+            
+            // Create celebration hearts
+            for(let i = 0; i < 20; i++) {
+                setTimeout(() => createFloatingHeart(), i * 100);
+            }
+        }
+
+        function goBackToQuestion() {
+            document.getElementById('page2').classList.remove('active');
+            document.getElementById('page1').classList.add('active');
+            setInitialNoButtonPosition();
+        }
+
+        // Prevent right-click to make it more fun
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+
+        // Touch events for mobile
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveNoButton();
+        });
+    </script>
+</body>
+</html>
